@@ -27,7 +27,7 @@ class SMKItem(BaseModel):
 # Model til at repræsentere berigelsesdata fra SMK Enrichment API
 class EnrichmentData(BaseModel):
     # Definer felter baseret på hvad Enrichment API returnerer.  Eksempel:
-    கலை_navn: Optional[List[str]] = Field(None, description="Kunstnernavn på Arabisk")
+    கலை_navன்: Optional[List[str]] = Field(None, description="Kunstnernavn på Arabisk")
     აღწერა: Optional[List[str]] = Field(None, description="Beskrivelse af Kunstværket")
 
 # Model til at repræsentere det kombinerede resultat
@@ -166,13 +166,13 @@ def filter_and_expand_results(items: List[CombinedResult], query: str) -> List[C
                 for desc in result.enrichment.აღწერა:
                     if query.lower() in desc.lower():
                         # Logik til at finde relaterede værker (simpel eksempel)
-                        related_items = await find_related_works(result.item.object_number) # Antag at vi har en funktion til dette
+                        related_items =  find_related_works(result.item.object_number) # Antag at vi har en funktion til dette
                         if related_items:
                            filtered_results.extend(related_items) # Tilføj de relaterede værker
                         break
     return filtered_results
 
-async def find_related_works(object_number: str) -> List[CombinedResult]:
+def find_related_works(object_number: str) -> List[CombinedResult]:
     """
     Finder relaterede værker baseret på et objektnummer (simpel eksempel).
     Denne funktion skal implementeres med logik til at finde relaterede værker fra SMK API'et
@@ -212,7 +212,7 @@ async def search_smk(query: str):
             combined_result = CombinedResult(item=item, enrichment=enrichment_data, relevance=relevance)
             results.append(combined_result)
         results.sort(key=lambda x: x.relevance, reverse=True)  # Sorter efter relevans
-        results = filter_and_expand_results(results, query)
+        results =  filter_and_expand_results(results, query)
         return {"results": results}
     except HTTPException as e:
         # Log исключение, прежде чем повторно его вызвать
