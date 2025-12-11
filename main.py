@@ -54,7 +54,8 @@ async def get_search_query(query: str) -> str:
             expanded_query = " OR ".join(syns) # Brug OR operator for at søge efter ethvert synonym
             break
 
-    return query # Returner den originale query for fuzzy matching
+    # Returner den udvidede query, så søgningen inkluderer eventuelle synonymer
+    return expanded_query
 
 async def fetch_smk_data(query: Annotated[str, Depends(get_search_query)]) -> List[SMKItem]:
     """
